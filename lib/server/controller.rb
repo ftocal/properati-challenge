@@ -12,17 +12,45 @@ class Controller < Sinatra::Base
   end
   
   get '/token' do
-    param :url, String, required: true
-    url = params[:url]
-    token = @getTokenAction.execute(url)
-    { token: token }.to_json
+    begin
+      param :url, String, required: true
+      url = params[:url]
+      token = @getTokenAction.execute(url)
+      content_type :json
+      status 200
+      { token: token }.to_json
+    rescue ArgumentError => e
+      content_type :json
+      status 400
+      {:result => 'error', :message => e.message}.to_json
+    rescue => e
+      content_type :json
+      status 500
+      {:result => 'error', :message => e.message}.to_json      
+    end
   end
 
   get '/redirect' do
-    param :token, String, required: true
-    token = params[:token]
-    url = @getUrlAction.execute(token)
-    status 301
-    redirect to(url)
+    begin
+      param :token, String, required: true
+      token = params[:token]
+      url = @getUrlAction.execute(token)
+      if url == nil
+        content_type :json
+        status 404
+        {:result => 'error', :message => 'Token not found'}.to_json
+      else
+        status 301
+        redirect to(url)
+      end
+    rescue ArgumentError => e
+      content_type :json
+      status 400
+      {:result => 'error', :message => e.message}.to_json
+    rescue => e
+      content_type :json
+      status 500
+      {:result => 'error', :message => e.message}.to_json
+    end
   end
 end

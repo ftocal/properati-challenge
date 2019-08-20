@@ -7,8 +7,39 @@
 + Run `bundle install` to install app dependencies
 
 ## Run application
-+ Run `rackup config.ru` to start application
++ Run `rackup -p 4567 config.ru` to start application
 + Access at <http://localhost:4567>
 
 ## Run test
 + Run `rake test` to run all tests
+
+##  Endpoints
+
+### Getting token
+
+```GET /token?url=<url>```
+
+Where:
+
+* url: Url to save
+
+Returns:
+
+* [200] token associated with the saved url 
+* [400] url empty or invalid
+* [500] unexpected error 
+
+### Redirect to url
+
+```GET /redirect?token=<token>```
+
+Where:
+
+* token: Saved token
+
+Returns:
+
+* [301] redict
+* [400] token empty or invalid
+* [404] token not found
+* [500] unexpected error 
