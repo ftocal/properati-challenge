@@ -39,7 +39,7 @@ Where:
 
 Returns:
 
-* [301] redict
+* [301] redirect to the url associated with the token
 * [400] token empty or invalid
 * [404] token not found
 * [500] unexpected error 

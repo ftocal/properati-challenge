@@ -6,4 +6,5 @@ gem 'sinatra-param'
 gem 'thin'
 gem 'base_x'
 gem 'minitest'
+gem 'rack-test'
 
